@@ -161,6 +161,111 @@ left_join(PVC_G88_LIBERTY %>% filter(!TRATAMENTO %in% c("Coloração","Coloraç�
   .[,c(1,2,12,13,17)] %>% View()
 
 
+## LIBERTY SHORT ==================================================
+
+left_join(PVC_G88_LIBERTY_SHORT %>% filter(!TRATAMENTO %in% c("Coloração","Coloração Especial") & !is.na(TRATAMENTO)),
+          
+          PVC_G88_LIBERTY_SHORT  %>% 
+            filter(!TRATAMENTO %in% c("Coloração","Coloração Especial") & !is.na(TRATAMENTO)) %>% 
+            distinct(TRATAMENTO) %>% 
+            data.frame(PROCODIGO2=c("TRPV102","TRCS102","TRCR102","TRCE102","TROP102","TRTEC102","TRHC")) ,
+          
+          by="TRATAMENTO") %>% 
+  .[,c(1,2,12,13,17)] %>% View()
+
+## DIGITIME ==================================================
+
+left_join(PVC_G88_DIGITIME %>% filter(!TRATAMENTO %in% c("Coloração","Coloração Especial") & !is.na(TRATAMENTO)),
+          
+          PVC_G88_DIGITIME  %>% 
+            filter(!TRATAMENTO %in% c("Coloração","Coloração Especial") & !is.na(TRATAMENTO)) %>% 
+            distinct(TRATAMENTO) %>% 
+            data.frame(PROCODIGO2=c("TRPV102","TRCS102","TRCR102","TRCE102","TROP102","TRTEC102","TRHC")) ,
+          
+          by="TRATAMENTO") %>% 
+  .[,c(1,2,12,13,17)] %>% View()
+
+
+## SPORT ==================================================
+
+left_join(PVC_G88_SPORT %>% filter(!TRATAMENTO %in% c("Coloração","Coloração Especial") & !is.na(TRATAMENTO)),
+          
+          PVC_G88_SPORT %>% 
+            filter(!TRATAMENTO %in% c("Coloração","Coloração Especial") & !is.na(TRATAMENTO)) %>% 
+            distinct(TRATAMENTO) %>% 
+            data.frame(PROCODIGO2=c("TRPV102","TRCS102","TRCR102","TRCE102","TROP102","TRHC")) ,
+          
+          by="TRATAMENTO") %>% 
+  .[,c(1,2,12,13,17)] %>% View()
+
+
+## COMFORT TRAD ==================================================
+
+
+left_join(PVC_G88_COMFORTTRAD %>% filter(!TRATAMENTO %in% c("Coloração","Coloração Especial") & !is.na(TRATAMENTO)),
+          
+          PVC_G88_COMFORTTRAD  %>% 
+            filter(!TRATAMENTO %in% c("Coloração","Coloração Especial") & !is.na(TRATAMENTO)) %>% 
+            distinct(TRATAMENTO) %>% 
+            data.frame(PROCODIGO2=c("TRPV102","TRCS102","TRCR102","TRCE102","TROP102","TRTEC102","TRHC")) ,
+          
+          by="TRATAMENTO") %>% 
+  .[,c(1,2,12,13,17)] %>% View()
+
+
+## LIBERTY TRAD ==================================================
+
+
+left_join(PVC_G88_LIBERTYTRAD %>% filter(!TRATAMENTO %in% c("Coloração","Coloração Especial") & !is.na(TRATAMENTO)),
+          
+          PVC_G88_LIBERTYTRAD  %>% 
+            filter(!TRATAMENTO %in% c("Coloração","Coloração Especial") & !is.na(TRATAMENTO)) %>% 
+            distinct(TRATAMENTO) %>% 
+            data.frame(PROCODIGO2=c("TRPV102","TRCS102","TRCR102","TRCE102","TROP102","TRTEC102","TRHC")) ,
+          
+          by="TRATAMENTO") %>% 
+  .[,c(1,2,12,13,17)] %>% View()
+
+
+## UNIQUE ==================================================
+
+left_join(PVC_G88_KDKUNIQUE,
+          
+          PVC_G88_KDKUNIQUE  %>% 
+            filter(!is.na(TRATAMENTO)) %>% 
+            distinct(TRATAMENTO) %>% 
+            data.frame(PROCODIGO2=c("TRPV202","TRCS202","TRCR202","TRCE202","TROP202","TRNR202","TRTEC202","TRHC")) ,
+          
+          by="TRATAMENTO") %>% 
+  .[,c(1,2,12,13,17)] %>% View()
+
+
+
+## NETWORK ==================================================
+
+left_join(PVC_G88_NETWORK,
+          
+          PVC_G88_NETWORK %>% 
+            filter(!is.na(TRATAMENTO)) %>% 
+            distinct(TRATAMENTO) %>% 
+            data.frame(PROCODIGO2=c("TRPV202","TRCS202","TRCR202","TRCE202","TROP202","TRNR202","TRTEC202","TRHC")) ,
+          
+          by="TRATAMENTO") %>% 
+  .[,c(1,2,12,13,17)] %>% View()
+
+
+## PRECISE ==================================================
+
+left_join(PVC_G88_KDK_PRECISE,
+          
+          PVC_G88_KDK_PRECISE %>% 
+            filter(!is.na(TRATAMENTO)) %>% 
+            distinct(TRATAMENTO) %>% 
+            data.frame(PROCODIGO2=c("TRPV202","TRCS202","TRCR202","TRCE202","TROP202","TRNR202","TRTEC202","TRHC")) ,
+          
+          by="TRATAMENTO") %>% 
+  .[,c(1,2,12,13,17)] %>% View()
+
 
 
 
