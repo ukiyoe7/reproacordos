@@ -266,6 +266,198 @@ left_join(PVC_G88_KDK_PRECISE,
           by="TRATAMENTO") %>% 
   .[,c(1,2,12,13,17)] %>% View()
 
+## PRECISE TRAD ==================================================
+
+left_join(PVC_G88_PRECISETRAD,
+          
+          PVC_G88_PRECISETRAD %>% 
+            filter(!is.na(TRATAMENTO)) %>% 
+            distinct(TRATAMENTO) %>% 
+            data.frame(PROCODIGO2=c("TRPV202","TRCS202","TRCR202","TRCE202","TROP202","TRNR202","TRTEC202","TRHC")) ,
+          
+          by="TRATAMENTO") %>% 
+  .[,c(1,2,12,13,17)] %>% View()
+
+
+##  KODAK SOFTWARE ==================================================
+
+left_join(PVC_G88_KDKSOFTWARE,
+          
+          PVC_G88_KDKSOFTWARE %>% 
+            filter(!is.na(TRATAMENTO)) %>% 
+            distinct(TRATAMENTO) %>% 
+            data.frame(PROCODIGO2=c("TRPV202","TRCS202","TRCR202","TRCE202","TROP202","TRNR202","TRTEC202","TRHC")) ,
+          
+          by="TRATAMENTO") %>% 
+  .[,c(1,2,12,13,17)] %>% View()
+
+
+##  KODAK SINGLE ORMA ==================================================
+
+left_join(PVC_G88_KDKDSINGLEORMA,
+          
+          PVC_G88_KDKDSINGLEORMA %>% 
+            filter(!is.na(TRATAMENTO)) %>% 
+            distinct(TRATAMENTO) %>% 
+            data.frame(PROCODIGO2=c("TRPV202","TRCS202","TRCR202","TRCE202","TROP202","TRNR202","TRTEC202","TRHC")) ,
+          
+          by="TRATAMENTO") %>% 
+  .[,c(1,2,12,13,17)] %>% View()
+
+
+##  KODAK SINGLE POLY ==================================================
+
+left_join(PVC_G88_KDKSINGLEPOLY,
+          
+          PVC_G88_KDKSINGLEPOLY %>% 
+            filter(!is.na(TRATAMENTO)) %>% 
+            distinct(TRATAMENTO) %>% 
+            data.frame(PROCODIGO2=c("TRPV202","TRCS202","TRCR202","TRCE202","TROP202","TRNR202","TRTEC202","TRHC")) ,
+          
+          by="TRATAMENTO") %>% 
+  .[,c(1,2,12,13,17)] %>% View()
+
+
+
+##  KODAK SINGLE SUN ==================================================
+
+left_join(PVC_G88_KDKSINGLESUN,
+          
+          PVC_G88_KDKSINGLESUN %>% 
+            filter(!is.na(TRATAMENTO)) %>% 
+            filter(!TRATAMENTO %in% c("Coloração","Coloração Especial") & !is.na(TRATAMENTO)) %>% 
+            distinct(TRATAMENTO) %>% 
+            data.frame(PROCODIGO2=c("TRCS202","TROP202","TRHC")) ,
+          
+          by="TRATAMENTO") %>% 
+  .[,c(1,2,12,13,17)] %>% View()
+
+
+##  KODAK EASY SUN ==================================================
+
+left_join(PVC_G88_KDKEASYSUN,
+          
+          PVC_G88_KDKEASYSUN %>% 
+            filter(!is.na(TRATAMENTO)) %>% 
+            filter(!TRATAMENTO %in% c("Coloração","Coloração Especial") & !is.na(TRATAMENTO)) %>% 
+            distinct(TRATAMENTO) %>% 
+            data.frame(PROCODIGO2=c("TRCS202","TROP202","TRHC")) ,
+          
+          by="TRATAMENTO") %>% 
+  .[,c(1,2,12,13,17)] %>% View()
+
+
+##  EYEZEN BOOST ==================================================
+
+left_join(PVC_G88_EYEZENBOOST,
+          
+          PVC_G88_EYEZENBOOST %>% 
+            filter(!is.na(TRATAMENTO)) %>% 
+            filter(!TRATAMENTO %in% c("Coloração","Coloração Especial") & !is.na(TRATAMENTO)) %>% 
+            distinct(TRATAMENTO) %>% 
+            data.frame(PROCODIGO2=c("TRPV309","TRHR309","TRCR309","TRCE309","TROP309","TRARSTAND")) ,
+          
+          by="TRATAMENTO") %>% 
+  .[,c(1,2,12,13,17)] %>% View()
+
+
+##  EYEZEN START ==================================================
+
+left_join(PVC_G88_EYEZENSTART,
+          
+          PVC_G88_EYEZENSTART %>% 
+            filter(!is.na(TRATAMENTO)) %>% 
+            filter(!TRATAMENTO %in% c("Coloração","Coloração Especial") & !is.na(TRATAMENTO)) %>% 
+            distinct(TRATAMENTO) %>% 
+            data.frame(PROCODIGO2=c("TRPV309","TRHR309","TRCR309","TRCE309","TROP309","TRARSTAND")) ,
+          
+          by="TRATAMENTO") %>% 
+  .[,c(1,2,12,13,17)] %>% View()
+
+
+
+##  EYEZEN START ==================================================
+
+left_join(PVC_G88_EYEZENKIDS,
+          
+          PVC_G88_EYEZENKIDS %>% 
+            filter(!is.na(TRATAMENTO)) %>% 
+            filter(!TRATAMENTO %in% c("Coloração","Coloração Especial") & !is.na(TRATAMENTO)) %>% 
+            distinct(TRATAMENTO) %>% 
+            data.frame(PROCODIGO2=c("TRPV309","TRHR309","TRCR309","TRCE309","TROP309","TRARSTAND")) ,
+          
+          by="TRATAMENTO") %>% 
+  .[,c(1,2,12,13,17)] %>% View()
+
+
+##  INTERVIEW ==================================================
+
+left_join(PVC_G88_INTERVIEW,
+          
+          PVC_G88_INTERVIEW %>% 
+            filter(!is.na(TRATAMENTO)) %>% 
+            filter(!TRATAMENTO %in% c("Coloração","Coloração Especial") & !is.na(TRATAMENTO)) %>% 
+            distinct(TRATAMENTO) %>% 
+            data.frame(PROCODIGO2=c("TRPV","TRHR","TRCR","TRCE","TROP","TRIC","")) ,
+          
+          by="TRATAMENTO") %>% 
+  .[,c(1,2,12,13,17)] %>% View()
+
+
+##  SURF ORMA ==================================================
+
+left_join(PVC_G88_SURFORMA,
+          
+          PVC_G88_SURFORMA %>% 
+            filter(!is.na(TRATAMENTO)) %>% 
+            filter(!TRATAMENTO %in% c("Coloração","Coloração Especial") & !is.na(TRATAMENTO)) %>% 
+            distinct(TRATAMENTO) %>% 
+            data.frame(PROCODIGO2=c("TRPV","TRHR","TRCR","TRCE","TROP","TRIC","","TRNR")) ,
+          
+          by="TRATAMENTO") %>% 
+  .[,c(1,2,12,13,17)] %>% View()
+
+
+##  SURF AIR STY ==================================================
+
+left_join(PVC_G88_SURFAIRSTY,
+          
+          PVC_G88_SURFAIRSTY %>% 
+            filter(!is.na(TRATAMENTO)) %>% 
+            filter(!TRATAMENTO %in% c("Coloração","Coloração Especial") & !is.na(TRATAMENTO)) %>% 
+            distinct(TRATAMENTO) %>% 
+            data.frame(PROCODIGO2=c("TRPV","TRHR","TRCR","TRCE","TROP","TRIC","","TRNR")) ,
+          
+          by="TRATAMENTO") %>% 
+  .[,c(1,2,12,13,17)] %>% View()
+
+
+##  POLAR ==================================================
+
+left_join(PVC_G88_POLAR,
+          
+          PVC_G88_POLAR %>% 
+            filter(!is.na(TRATAMENTO)) %>% 
+            filter(!TRATAMENTO %in% c("Coloração","Coloração Especial") & !is.na(TRATAMENTO)) %>% 
+            distinct(TRATAMENTO) %>% 
+            data.frame(PROCODIGO2=c("TRHR","TROP","")) ,
+          
+          by="TRATAMENTO") %>% 
+  .[!is.na(.$LENTES),c(1,2,12,13,17)]  %>% View()
+
+
+##  VS ==================================================
+
+PVC_G88_VS %>% 
+  .[!is.na(.$LENTES),c(1,2,11)]  %>% View()
+
+
+
+
+
+
+
+
 
 
 
