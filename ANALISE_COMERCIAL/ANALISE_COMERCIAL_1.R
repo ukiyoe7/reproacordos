@@ -1,6 +1,7 @@
 library(DBI)
 library(tidyverse)
 library(googlesheets4)
+library(xlsx)
 
 con2 <- dbConnect(odbc::odbc(), "reproreplica")
 
@@ -25,6 +26,36 @@ cli <- dbGetQuery(con2,"SELECT DISTINCT C.CLICODIGO,
 
 
 cli %>% 
-   group_by(CLIRAZSOCIAL,CLINOMEFANT,CNPJ,GCLCODIGO) %>% 
+   group_by(CLIRAZSOCIAL,CLINOMEFANT,CLICNPJCPF,GCLCODIGO) %>% 
         summarize(C=n_distinct(CNPJ)) %>%
-   filter(is.na(GCLCODIGO)) %>% View()
+          filter(is.na(GCLCODIGO)) %>% 
+            filter(CNPJ!="00000000000000") %>% View()
+
+## CLIENTES LOJAS
+
+lojas <- 
+      cli %>% 
+        filter(is.na(GCLCODIGO)) %>% 
+          group_by(CLIRAZSOCIAL,CLINOMEFANT,CNPJ,GCLCODIGO) %>% 
+           summarize(C=n_distinct(CNPJ)) %>%
+            mutate(CNPJ=as.character(CNPJ)) %>%  
+             filter(CNPJ!="00000000000000")
+
+View(lojas)
+
+
+write.csv2(lojas,file="TEST.csv",row.names = FALSE)
+
+
+# CLIENTES GRUPOS
+
+grupos <- 
+  cli %>% 
+   group_by(GCLNOME,GCLCODIGO) %>% 
+    summarize(C=n_distinct(GCLNOME)) %>% 
+     filter(CNPJ!="00000000000000") %>% 
+       write.csv2(.,file="ANALISE_COMERCIAL/grupos.csv",row.names = FALSE)
+
+
+
+
