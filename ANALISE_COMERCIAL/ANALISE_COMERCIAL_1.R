@@ -1,3 +1,6 @@
+## CLIENTES
+
+
 library(DBI)
 library(tidyverse)
 library(googlesheets4)
@@ -23,6 +26,18 @@ cli <- dbGetQuery(con2,"SELECT DISTINCT C.CLICODIGO,
                                            LEFT JOIN GRUPOCLI GR ON C.GCLCODIGO=GR.GCLCODIGO
                                             WHERE CLICLIENTE='S'")
 
+inativos <- dbGetQuery(con2,"
+SELECT DISTINCT SITCLI.CLICODIGO,SITCODIGO FROM SITCLI
+INNER JOIN (SELECT DISTINCT SITCLI.CLICODIGO,MAX(SITDATA)ULTIMA FROM SITCLI
+GROUP BY 1)A ON SITCLI.CLICODIGO=A.CLICODIGO AND A.ULTIMA=SITCLI.SITDATA 
+INNER JOIN (SELECT DISTINCT SITCLI.CLICODIGO,SITDATA,MAX(SITSEQ)USEQ FROM SITCLI
+GROUP BY 1,2)MSEQ ON A.CLICODIGO=MSEQ.CLICODIGO AND MSEQ.SITDATA=A.ULTIMA 
+AND MSEQ.USEQ=SITCLI.SITSEQ WHERE SITCODIGO=4
+")
+
+clien <- anti_join(cli,inativos,by="CLICODIGO") 
+
+
 
 
 cli %>% 
@@ -36,7 +51,7 @@ cli %>%
 lojas <- 
       cli %>% 
         filter(is.na(GCLCODIGO)) %>% 
-          group_by(CLIRAZSOCIAL,CLINOMEFANT,CNPJ,GCLCODIGO) %>% 
+          group_by(CLICODIGO,CLIRAZSOCIAL,CLINOMEFANT,CNPJ) %>% 
            summarize(C=n_distinct(CNPJ)) %>%
             mutate(CNPJ=as.character(CNPJ)) %>%  
              filter(CNPJ!="00000000000000")
@@ -52,9 +67,11 @@ write.csv2(lojas,file="TEST.csv",row.names = FALSE)
 grupos <- 
   cli %>% 
    group_by(GCLNOME,GCLCODIGO) %>% 
-    summarize(C=n_distinct(GCLNOME)) %>% 
-     filter(CNPJ!="00000000000000") %>% 
-       write.csv2(.,file="ANALISE_COMERCIAL/grupos.csv",row.names = FALSE)
+    summarize(C=n_distinct(GCLNOME)) 
+
+View(grupos)
+
+       write.csv2(grupos,file="ANALISE_COMERCIAL/grupos.csv",row.names = FALSE)
 
 
 
