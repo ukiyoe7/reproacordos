@@ -1,5 +1,8 @@
+## PRODUTOS
 
-tabpreco <- dbGetQuery(con2,"SELECT * FROM TABPRECO")
+
+tabpreco <- dbGetQuery(con2,"SELECT * FROM TABPRECO WHERE TBPSITUACAO='A' AND 
+                       (TBPDTVALIDADE >='TODAY' OR TBPDTVALIDADE IS NULL)")
 
 View(tabpreco)
 
@@ -51,6 +54,7 @@ tbpprodu7 <- dbGetQuery(con2,"SELECT TBPCODIGO,P.PROCODIGO,PRODESCRICAO,PROSITUA
 
 View(tbpprodu7)
 
+## EYEZEN
 
 tbpprodu8 <- dbGetQuery(con2,"SELECT TBPCODIGO,P.PROCODIGO,PRODESCRICAO,PROSITUACAO 
                               FROM TBPPRODU P
@@ -60,9 +64,25 @@ tbpprodu8 <- dbGetQuery(con2,"SELECT TBPCODIGO,P.PROCODIGO,PRODESCRICAO,PROSITUA
 View(tbpprodu8)
 
 
+## KODAK VS
+
+tbpprodu9 <- dbGetQuery(con2,"
+
+WITH PROD AS (SELECT PROCODIGO,PRODESCRICAO FROM PRODU WHERE PRODESCRICAO LIKE '%KODAK%' AND GR2CODIGO=3
+ AND PROSITUACAO='A'),
+ 
+TAB_ACORDO AS (SELECT TBPCODIGO,TBPDESCRICAO FROM TABPRECO WHERE TBPSITUACAO='A' AND 
+                       (TBPDTVALIDADE >='TODAY' OR TBPDTVALIDADE IS NULL) AND TBPCODIGO<>202 AND
+                        TBPTABCOMB<>'N')
+
+SELECT P.TBPCODIGO,P.PROCODIGO,PRODESCRICAO,TBPPCDESCTO2,TBPPCOVENDA2
+                              FROM TBPPRODU P
+                               INNER JOIN PROD PR ON PR.PROCODIGO=P.PROCODIGO
+                                INNER JOIN TAB_ACORDO TA ON P.TBPCODIGO=TA.TBPCODIGO
+")
+
+View(tbpprodu9)
 
 
-anti_join(tbpprodu7,tbpprodu6,by="PROCODIGO") %>% View()
 
-
-metas <- read.table(text = read_clip(), header = TRUE, sep = "\t") 
+aux <- read.table(text = read_clip(), header = TRUE, sep = "\t") 
