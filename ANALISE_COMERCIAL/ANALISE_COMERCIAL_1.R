@@ -24,7 +24,7 @@ cli <- dbGetQuery(con2,"SELECT DISTINCT C.CLICODIGO,
                                          LEFT JOIN CIDADE CID ON E.CIDCODIGO=CID.CIDCODIGO
                                           LEFT JOIN (SELECT ZOCODIGO,ZODESCRICAO FROM ZONA WHERE ZOCODIGO IN (20,21,22,23,24,25,26,27,28))Z ON E.ZOCODIGO=Z.ZOCODIGO WHERE ENDFAT='S')A ON C.CLICODIGO=A.CLICODIGO
                                            LEFT JOIN GRUPOCLI GR ON C.GCLCODIGO=GR.GCLCODIGO
-                                            WHERE CLICLIENTE='S'")
+                                            WHERE CLICLIENTE='S' AND CLIFORNEC='N'")
 
 inativos <- dbGetQuery(con2,"
 SELECT DISTINCT SITCLI.CLICODIGO,SITCODIGO FROM SITCLI
@@ -37,7 +37,7 @@ AND MSEQ.USEQ=SITCLI.SITSEQ WHERE SITCODIGO=4
 
 clien <- anti_join(cli,inativos,by="CLICODIGO") 
 
-
+View(clien)
 
 
 cli %>% 
@@ -49,9 +49,9 @@ cli %>%
 ## CLIENTES LOJAS
 
 lojas <- 
-      cli %>% 
+      clien %>% 
         filter(is.na(GCLCODIGO)) %>% 
-          group_by(CLICODIGO,CLIRAZSOCIAL,CLINOMEFANT,CNPJ) %>% 
+          group_by(CLICODIGO,CLIRAZSOCIAL,CNPJ) %>% 
            summarize(C=n_distinct(CNPJ)) %>%
             mutate(CNPJ=as.character(CNPJ)) %>%  
              filter(CNPJ!="00000000000000")
@@ -65,7 +65,7 @@ write.csv2(lojas,file="TEST.csv",row.names = FALSE)
 # CLIENTES GRUPOS
 
 grupos <- 
-  cli %>% 
+  clien %>% 
    group_by(GCLNOME,GCLCODIGO) %>% 
     summarize(C=n_distinct(GCLNOME)) 
 

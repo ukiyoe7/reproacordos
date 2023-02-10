@@ -93,6 +93,8 @@ View(g_clitbp_kdk)
 
 ## KODAK VS ===============================================================================  
 
+## LOJAS
+
 clitbp_kdk_vs <- dbGetQuery(con2,"SELECT DISTINCT CLICODIGO,TBPCODIGO FROM CLITBP")
 
 
@@ -104,7 +106,7 @@ PRODESCRICAO NOT LIKE '%SINGLE%') AND GR2CODIGO=3
  
 TAB_ACORDO AS (SELECT TBPCODIGO,TBPDESCRICAO FROM TABPRECO WHERE TBPSITUACAO='A' AND 
                        (TBPDTVALIDADE >='TODAY' OR TBPDTVALIDADE IS NULL) AND TBPCODIGO<>202 AND
-                        TBPTABCOMB='N')
+                        TBPTABCOMB='N' AND TBPDESCRICAO NOT LIKE '%PROMO DO MES%')
 
 SELECT DISTINCT P.TBPCODIGO,P.PROCODIGO,PRODESCRICAO,TBPPCDESCTO,TBPPCOVENDA,TBPPCDESCTO2,TBPPCOVENDA2
                               FROM TBPPRODU P
@@ -112,8 +114,30 @@ SELECT DISTINCT P.TBPCODIGO,P.PROCODIGO,PRODESCRICAO,TBPPCDESCTO,TBPPCOVENDA,TBP
                                 INNER JOIN TAB_ACORDO TA ON P.TBPCODIGO=TA.TBPCODIGO")
 
 
-inner_join(tbpprodu9,clitbp_kdk_vs,by="TBPCODIGO") %>% View()
+clitbp_kdk_vs_2  <- inner_join(tbpprodu9,clitbp_kdk_vs,by="TBPCODIGO") 
 
+View(clitbp_kdk_vs_2) 
+
+
+clitbp_kdk_vs_3 <- 
+inner_join(tbpprodu9,clitbp_kdk_vs,by="TBPCODIGO") %>% 
+   group_by(CLICODIGO) %>% 
+    summarize(TBPPCDESCTO2=max(TBPPCDESCTO2)) 
+
+View(clitbp_kdk_vs_3)
+
+##GRUPOS
+
+clitbp_kdk_vs_4 <- 
+inner_join(clien %>% 
+            select(CLICODIGO,GCLCODIGO) %>% 
+            filter(!is.na(GCLCODIGO)),clitbp_kdk_vs_3 ,by="CLICODIGO") %>% 
+              group_by(GCLCODIGO) %>% 
+                summarize(TBPPCDESCTO2=mean(TBPPCDESCTO2,na.rm = TRUE))
+
+
+View(clitbp_kdk_vs_4)
+  
 
 
 ## EYEZEN ===============================================================================  
@@ -152,6 +176,60 @@ g_clitbp_eyez <-
 View(g_clitbp_eyez)
 
 
+#LA CRIZAL =========================
 
+clitbp_LA <- dbGetQuery(con2,"SELECT DISTINCT CLICODIGO,TBPCODIGO FROM CLITBP")
+
+tbpprodu10 <- dbGetQuery(con2,"
+
+WITH PROD AS (SELECT PROCODIGO2 FROM PRODU WHERE PRODESCRICAO LIKE '%CRIZAL%' AND
+LEFT(PROCODIGO2,2)='LA' AND PROSITUACAO='A'),
+ 
+TAB_ACORDO AS (SELECT TBPCODIGO,TBPDESCRICAO FROM TABPRECO WHERE TBPSITUACAO='A' AND 
+                       (TBPDTVALIDADE >='TODAY' OR TBPDTVALIDADE IS NULL) AND
+                        TBPTABCOMB='N' AND TBPDESCRICAO NOT LIKE '%PROMO DO MES%'),
+                        
+CLITB AS (SELECT CLICODIGO,TBPCODIGO FROM CLITBP)                         
+
+SELECT DISTINCT P.TBPCODIGO,
+                  CLICODIGO,
+                   P.PROCODIGO,
+                    TBPPCDESCTO,
+                     TBPPCOVENDA2,
+                      TBPPCDESCTO2,
+                       TBPPCOVENDA2
+                        FROM TBPPRODU P
+                               INNER JOIN PROD PR ON PR.PROCODIGO2=P.PROCODIGO
+                                INNER JOIN TAB_ACORDO TA ON P.TBPCODIGO=TA.TBPCODIGO
+                                  LEFT JOIN CLITB TB ON P.TBPCODIGO=TB.TBPCODIGO")
+
+View(tbpprodu10)
+
+clitbp_crizal<-
+tbpprodu10 %>% select(CLICODIGO,TBPPCDESCTO2) %>% 
+   group_by(CLICODIGO) %>% 
+   summarize(`CRIZAL VS`=round(mean(TBPPCDESCTO2,na.rm = TRUE),2))
+
+View(clitbp_crizal)
+
+
+clitbp_crizal_grupo <- 
+inner_join(clitbp_crizal,clien %>% 
+            select(CLICODIGO,GCLCODIGO) %>% 
+            filter(!is.na(GCLCODIGO)),by="CLICODIGO") %>%
+             group_by(GCLCODIGO) %>% 
+              summarize(`CRIZAL VS`=round(mean(`CRIZAL VS`,na.rm = TRUE),2))
+
+View(clitbp_crizal_grupo)
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 
 
