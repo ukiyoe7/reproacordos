@@ -24,7 +24,7 @@ cli <- dbGetQuery(con2,"SELECT DISTINCT C.CLICODIGO,
                                          LEFT JOIN CIDADE CID ON E.CIDCODIGO=CID.CIDCODIGO
                                           LEFT JOIN (SELECT ZOCODIGO,ZODESCRICAO FROM ZONA WHERE ZOCODIGO IN (20,21,22,23,24,25,26,27,28))Z ON E.ZOCODIGO=Z.ZOCODIGO WHERE ENDFAT='S')A ON C.CLICODIGO=A.CLICODIGO
                                            LEFT JOIN GRUPOCLI GR ON C.GCLCODIGO=GR.GCLCODIGO
-                                            WHERE CLICLIENTE='S' AND CLIFORNEC='N'")
+                                            WHERE CLICLIENTE='S'")
 
 inativos <- dbGetQuery(con2,"
 SELECT DISTINCT SITCLI.CLICODIGO,SITCODIGO FROM SITCLI
@@ -66,8 +66,10 @@ write.csv2(lojas,file="TEST.csv",row.names = FALSE)
 
 grupos <- 
   clien %>% 
-   group_by(GCLNOME,GCLCODIGO) %>% 
-    summarize(C=n_distinct(GCLNOME)) 
+   filter(!is.na(GCLCODIGO)) %>% 
+    group_by(GCLNOME,GCLCODIGO) %>% 
+     summarize(C=n_distinct(GCLNOME)) %>% 
+      mutate(GRUPO=paste0(GCLNOME," G",GCLCODIGO))
 
 View(grupos)
 

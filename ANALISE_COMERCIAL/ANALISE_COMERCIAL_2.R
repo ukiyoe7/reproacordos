@@ -6,6 +6,7 @@ library(googlesheets4)
 library(xlsx)
 library(reshape2)
 
+con2 <- dbConnect(odbc::odbc(), "reproreplica")
 
 ## GERAL ======================================
 
@@ -122,7 +123,8 @@ View(clitbp_kdk_vs_2)
 clitbp_kdk_vs_3 <- 
 inner_join(tbpprodu9,clitbp_kdk_vs,by="TBPCODIGO") %>% 
    group_by(CLICODIGO) %>% 
-    summarize(TBPPCDESCTO2=max(TBPPCDESCTO2)) 
+    .[,c(1,3,2)] %>% 
+    summarize(TBPPCDESCTO2=round(mean(TBPPCDESCTO2))) 
 
 View(clitbp_kdk_vs_3)
 
@@ -133,7 +135,7 @@ inner_join(clien %>%
             select(CLICODIGO,GCLCODIGO) %>% 
             filter(!is.na(GCLCODIGO)),clitbp_kdk_vs_3 ,by="CLICODIGO") %>% 
               group_by(GCLCODIGO) %>% 
-                summarize(TBPPCDESCTO2=mean(TBPPCDESCTO2,na.rm = TRUE))
+                summarize(TBPPCDESCTO2=round(mean(TBPPCDESCTO2,na.rm = TRUE)))
 
 
 View(clitbp_kdk_vs_4)
@@ -173,7 +175,7 @@ g_clitbp_eyez <-
   .[,g_order_eyez] 
 
 
-View(g_clitbp_eyez)
+  View(g_clitbp_eyez)
 
 
 #LA CRIZAL =========================
