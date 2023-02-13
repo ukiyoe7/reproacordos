@@ -118,25 +118,25 @@ left_join(tbpprodu10,prod,by="PROCODIGO") %>% View()
 
 ## STELLEST=================
   
-tbpprodu11 <- dbGetQuery(con2,"
-
-WITH PROD AS (SELECT PROCODIGO FROM PRODU WHERE PRODESCRICAO LIKE '%STELLEST%' AND PROSITUACAO='A'),
- 
-TAB_ACORDO AS (SELECT TBPCODIGO,TBPDESCRICAO FROM TABPRECO WHERE TBPSITUACAO='A' AND 
-                       (TBPDTVALIDADE >='TODAY' OR TBPDTVALIDADE IS NULL) AND
-                        TBPTABCOMB='N')
-
-SELECT DISTINCT P.TBPCODIGO,
-                  P.PROCODIGO,
-                    TBPPCDESCTO,
-                     TBPPCOVENDA2,
-                       TBPPCDESCTO2,
-                         TBPPCOVENDA2
-                              FROM TBPPRODU P
-                               INNER JOIN PROD PR ON PR.PROCODIGO=P.PROCODIGO
-                                INNER JOIN TAB_ACORDO TA ON P.TBPCODIGO=TA.TBPCODIGO")
-
-View(tbpprodu11)  
+  tbpprodu11 <- dbGetQuery(con2,"
+  
+  WITH PROD AS (SELECT PROCODIGO FROM PRODU WHERE PRODESCRICAO LIKE '%STELLEST%' AND PROSITUACAO='A'),
+   
+  TAB_ACORDO AS (SELECT TBPCODIGO,TBPDESCRICAO FROM TABPRECO WHERE TBPSITUACAO='A' AND 
+                         (TBPDTVALIDADE >='TODAY' OR TBPDTVALIDADE IS NULL) AND
+                          TBPTABCOMB='N')
+  
+  SELECT DISTINCT P.TBPCODIGO,
+                    P.PROCODIGO,
+                      TBPPCDESCTO,
+                       TBPPCOVENDA2,
+                         TBPPCDESCTO2,
+                           TBPPCOVENDA2
+                                FROM TBPPRODU P
+                                 INNER JOIN PROD PR ON PR.PROCODIGO=P.PROCODIGO
+                                  INNER JOIN TAB_ACORDO TA ON P.TBPCODIGO=TA.TBPCODIGO")
+  
+  View(tbpprodu11)  
 
 
 

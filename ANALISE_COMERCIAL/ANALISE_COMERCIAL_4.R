@@ -12,10 +12,11 @@ sales <- dbGetQuery(con2,"
                                  
   FIS AS (SELECT FISCODIGO FROM TBFIS WHERE FISTPNATOP IN ('V','R','SR')),
       
-      PED AS (SELECT CLICODIGO
+      PED AS (SELECT ID_PEDIDO,
+                      CLICODIGO
                               FROM PEDID P
                                INNER JOIN FIS ON P.FISCODIGO1=FIS.FISCODIGO
-                                 WHERE PEDDTBAIXA BETWEEN '01.02.2023' AND 'TODAY' 
+                                 WHERE PEDDTBAIXA BETWEEN '01.02.2021' AND 'TODAY' 
                                   AND PEDSITPED<>'C'
                                    AND PEDLCFINANC IN ('S', 'L','N')) 
       

@@ -8,12 +8,6 @@ library(reshape2)
 
 con2 <- dbConnect(odbc::odbc(), "reproreplica")
 
-## GERAL ======================================
-
-
-cli_desctgeral <- dbGetQuery(con2,"SELECT CLICODIGO,GCLCODIGO,CLIPCDESCPRODU DESCTGERAL FROM CLIEN")
-
-View(cli_desctgeral)
 
 ## VARILUX ======================================
 
@@ -22,7 +16,7 @@ View(cli_desctgeral)
 clitbp_vlx <- dbGetQuery(con2,"SELECT CLICODIGO,TBPCODIGO,TBPDESC2 FROM CLITBP
                      WHERE TBPCODIGO IN (101,102)")
 
-clitbp_vlx_2 <- left_join(clitbp,aux, by="TBPCODIGO") 
+clitbp_vlx_2 <- left_join(clitbp_vlx,aux, by="TBPCODIGO") 
 
 View(clitbp_vlx_2)
 
@@ -36,6 +30,14 @@ clitbp_vlx_3 <- clitbp_vlx_2 %>%
 
 
                 View(clitbp_vlx_3)
+                
+                
+clitbp_vlx_4 <- left_join(clitbp_vlx_3, cli_desctgeral_lojas, by = "CLICODIGO") %>%
+   mutate_all(~ifelse(is.na(.), DESCTGERAL, .)) %>%
+    select(-DESCTGERAL)
+
+View(clitbp_vlx_4)
+                                
 
 ## GRUPOS
                 
@@ -73,8 +75,14 @@ clitbp_kdk_3 <- clitbp_kdk_2 %>%
   dcast(CLICODIGO ~ TBPDESCRICAO,na.rm = TRUE) %>% as.data.frame() %>% 
   .[,corder_kdk] 
 
-
 View(clitbp_kdk_3)
+
+
+clitbp_kdk_4 <- left_join(clitbp_kdk_3, cli_desctgeral_lojas, by = "CLICODIGO") %>%
+  mutate_all(~ifelse(is.na(.), DESCTGERAL, .)) %>%
+  select(-DESCTGERAL)
+
+View(clitbp_kdk_4)
 
 ## GRUPOS
 
@@ -123,10 +131,11 @@ View(clitbp_kdk_vs_2)
 clitbp_kdk_vs_3 <- 
 inner_join(tbpprodu9,clitbp_kdk_vs,by="TBPCODIGO") %>% 
    group_by(CLICODIGO) %>% 
-    .[,c(1,3,2)] %>% 
     summarize(TBPPCDESCTO2=round(mean(TBPPCDESCTO2))) 
+    
 
 View(clitbp_kdk_vs_3)
+
 
 ##GRUPOS
 
@@ -161,6 +170,8 @@ clitbp_eyez_3 <- clitbp_eyez_2 %>%
 
 
 View(clitbp_eyez_3)
+
+
 
 ## GRUPOS
 
@@ -214,6 +225,7 @@ tbpprodu10 %>% select(CLICODIGO,TBPPCDESCTO2) %>%
 
 View(clitbp_crizal)
 
+## GRUPOS
 
 clitbp_crizal_grupo <- 
 inner_join(clitbp_crizal,clien %>% 
