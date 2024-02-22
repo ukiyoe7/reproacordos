@@ -826,7 +826,14 @@ relrepro_LA_G244 <-
 
   union_all(relrepro_103_G244,relrepro_104_G244) %>% 
    union_all(.,relrepro_3660_G244) %>%     
-    union_all(.,relrepro_3661_G244) 
+    union_all(.,relrepro_3661_G244) %>% 
+      select(PRODESCRICAO,PROCODIGO,PRECO.x,DESCONTO,ACORDO,MONTAGEM,MONTAGEM,PRECO.y,TBPPCDESCTO2,VALOR_ACORDO_MONTAGEM,VALOR_FINAL,CHAVE,PDC)     
+
+new_column_names <- c("LENTE","COD_LEN","PRECO_LEN","DESCONTO_LEN","ACORDO_LEN","COD_MONT","PRECO_MONT","DESCONTO_MONT","ACORDO_MONT","ACORDO_TOTAL","CHAVE","PDC")           
+
+relrepro_LA_G244 <-
+  relrepro_LA_G244 %>% rename_with(~ new_column_names, .cols = everything())
+
 
 View(relrepro_LA_G244)
 
@@ -837,7 +844,13 @@ relrepro_ST_G244 <-
   
  union_all(relrepro_101_ST_G244,relrepro_102_ST_G244) %>% 
   union_all(.,relrepro_201_ST_G244) %>%     
-   union_all(.,relrepro_202_ST_G244) 
+   union_all(.,relrepro_202_ST_G244) %>% 
+     select(PRODESCRICAO,PROCODIGO,PRECO.x,DESCONTO,ACORDO,MONTAGEM,MONTAGEM,PRECO.y,TBPPCDESCTO2,VALOR_ACORDO_MONTAGEM,VALOR_FINAL,CHAVE,PDC)     
+
+new_column_names <- c("LENTE","COD_LEN","PRECO_LEN","DESCONTO_LEN","ACORDO_LEN","COD_MONT","PRECO_MONT","DESCONTO_MONT","ACORDO_MONT","ACORDO_TOTAL","CHAVE","PDC")           
+
+relrepro_ST_G244 <-
+  relrepro_ST_G244 %>% rename_with(~ new_column_names, .cols = everything())
   
   View(relrepro_ST_G244)
   
