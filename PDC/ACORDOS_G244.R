@@ -124,7 +124,7 @@ combinados_g244_pvo <-
   
            select(PRODESCRICAO,PROCODIGOA,CCPCOVENDAPROA2,DESCONTO,VALOR_ACORDOA,PROCODIGOB,CCPCOVENDAPROB2,DESCONTO2,VALOR_ACORDOB,MONTAGEM,PRECO,TBPPCDESCTO2,VALOR_ACORDO_MONTAGEM,VALOR_FINAL,CHAVE,PDC) 
  
-new_column_names <- c("LENTE","PROCODIGOA","PRECO_LEN","DESCONTO_LEN","ACORDO_LEN","TRATAMENTO","PRECO_TRAT","DESCONTO_TRAT","ACORDO_TRAT","MONTAGEM","PRECO_MONT","DESCONTO_MONT","ACORDO_MONT","ACORDO_TOTAL","CHAVE","PDC")           
+new_column_names <- c("LENTE","COD_LEN","PRECO_LEN","DESCONTO_LEN","ACORDO_LEN","COD_TRAT","PRECO_TRAT","DESCONTO_TRAT","ACORDO_TRAT","COD_MONT","PRECO_MONT","DESCONTO_MONT","ACORDO_MONT","ACORDO_TOTAL","CHAVE","PDC")           
 
 combinados_g244_pvo <-
 combinados_g244_pvo %>% rename_with(~ new_column_names, .cols = everything())
@@ -801,12 +801,24 @@ relrepro_trat_G244 <-
 
 
   
-new_column_names <- c("LENTE","PROCODIGOA","PRECO_LEN","DESCONTO_LEN","ACORDO_LEN","TRATAMENTO","PRECO_TRAT","DESCONTO_TRAT","ACORDO_TRAT","MONTAGEM","PRECO_MONT","DESCONTO_MONT","ACORDO_MONT","ACORDO_TOTAL","CHAVE","PDC")           
-
+  new_column_names <- c("LENTE","COD_LEN","PRECO_LEN","DESCONTO_LEN","ACORDO_LEN","COD_TRAT","PRECO_TRAT","DESCONTO_TRAT","ACORDO_TRAT","COD_MONT","PRECO_MONT","DESCONTO_MONT","ACORDO_MONT","ACORDO_TOTAL","CHAVE","PDC")           
+  
 relrepro_trat_G244 <-
   relrepro_trat_G244 %>% rename_with(~ new_column_names, .cols = everything())
 
 View(relrepro_trat_G244)
+
+
+# JOIN TAB COMB
+
+  
+pvo_relrepro_trat_g244 <-   
+union_all(relrepro_trat_G244,relrepro_trat_G244) %>% 
+   anti_join(.,inner_join(combinados_g244_pvo,relrepro_trat_G244,by=c("COD_LEN","COD_TRAT")),by=c("COD_LEN","COD_TRAT"))  %>% 
+    union_all(.,combinados_g244_pvo)  %>% distinct()
+
+View(pvo_relrepro_trat_g244)
+  
 
 # RELREPRO LA  
 
@@ -829,5 +841,11 @@ relrepro_ST_G244 <-
   
   View(relrepro_ST_G244)
   
-
+## AJUSTES
+  
+-- face interna
+-- colorações
+-- bifocais  
+  
+  
 
