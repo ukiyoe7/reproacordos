@@ -97,7 +97,10 @@ combinados_g244_pvo <-
   left_join(.,trat_bonif_g244 %>% mutate(TRAT=1),by=c("PROCODIGOA","PROCODIGOB")) %>% 
   
    # calc acordo comb
-   mutate(VALOR_ACORDO=CCPCOVENDAPROA2*(1-(DESCONTO/100))*2+ mutate(CCPCOVENDAPROB2 = if_else(TRAT == 1, 1, CCPCOVENDAPROB2*(1-(DESCONTO/100))) )) %>% View()
+   mutate(VALOR_ACORDOA=CCPCOVENDAPROA2*(1-(DESCONTO/100))*2) %>% 
+            mutate(VALOR_ACORDOB= if_else(!is.na(TRAT), 1, CCPCOVENDAPROB2*(1-(DESCONTO/100))) ) %>% 
+  mutate(VALOR_ACORDO=VALOR_ACORDOA+VALOR_ACORDOB)  %>%  select(-TRAT,-VALOR_ACORDOA,-VALOR_ACORDOB) %>% 
+
   
    # adiciona montagem
     mutate(MONTAGEM='MOMF') %>% left_join(.,premp %>% mutate(PROCODIGO=trimws(PROCODIGO)),by=c("MONTAGEM"="PROCODIGO")) %>% 
@@ -121,8 +124,6 @@ combinados_g244_pvo <-
               .[,c(-3,-4,-8,-9)]
 
 View(combinados_g244_pvo)
-
-
 
 combinados_g244_pvo %>% filter(!is.na(PDC))%>% View()
 
