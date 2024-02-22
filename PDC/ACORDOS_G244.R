@@ -18,8 +18,6 @@ dbGetQuery(con2,"
 SELECT CLIPCDESCPRODU DESCTO_GERAL FROM CLIEN WHERE CLICODIGO=241")
 
 
-
-
 ## ACORDOS RELREPRO =====================================================
 
 acordos_relrepro_G244 <- get(load(file="C:\\Users\\REPRO SANDRO\\Documents\\R\\ACORDOS\\PDC\\acordos_relrepro_G244.RData"))
@@ -97,7 +95,7 @@ combinados_g244_pvo <-
    combinados_g244 %>% filter(TBPCODIGO==1) %>% 
   
   # join acordos relrepro 
-  left_join(.,acordos_relrepro_G244,by=c("PROCODIGOA"="PROCODIGO")) %>% 
+  left_join(.,acordos_relrepro_G244,by=c("PROCODIGOA"="PROCODIGO")) %>% mutate(DESCONTO2=DESCONTO) %>% left_join(.,prod,by=c("PROCODIGOA"="PROCODIGO")) %>% 
   
   # verifica trat bonif
   left_join(.,trat_bonif_g244 %>% mutate(TRAT=1),by=c("PROCODIGOA","PROCODIGOB")) %>% 
@@ -105,12 +103,8 @@ combinados_g244_pvo <-
    # calc acordo comb com a condicional de trat
    mutate(VALOR_ACORDOA=CCPCOVENDAPROA2*(1-(DESCONTO/100))*2) %>% 
     mutate(VALOR_ACORDOB= if_else(!is.na(TRAT), 1, CCPCOVENDAPROB2*(1-(DESCONTO/100))) ) %>% 
-     mutate(VALOR_ACORDO=VALOR_ACORDOA+VALOR_ACORDOB)  %>%  
-  
-  #exclui colunas de calculo
-  select(-TRAT,-VALOR_ACORDOA,-VALOR_ACORDOB) %>% 
+     mutate(VALOR_ACORDO=VALOR_ACORDOA+VALOR_ACORDOB)  %>% 
 
-  
    # adiciona montagem
     mutate(MONTAGEM='MOMF') %>% left_join(.,premp %>% mutate(PROCODIGO=trimws(PROCODIGO)),by=c("MONTAGEM"="PROCODIGO")) %>% 
    
@@ -127,16 +121,22 @@ combinados_g244_pvo <-
   
           # get pdc
            left_join(.,pdc_df2 %>% select(CHAVE,PDC),by="CHAVE") %>% 
-
-            #exclui colunas vazias
+  
+           select(PRODESCRICAO,PROCODIGOA,CCPCOVENDAPROA2,DESCONTO,VALOR_ACORDOA,PROCODIGOB,CCPCOVENDAPROB2,DESCONTO2,VALOR_ACORDOB,MONTAGEM,PRECO,TBPPCDESCTO2,VALOR_ACORDO_MONTAGEM,VALOR_FINAL,CHAVE,PDC) 
  
-              .[,c(-3,-4,-8,-9)]
+new_column_names <- c("LENTE","PROCODIGOA","PRECO_LEN","DESCONTO_LEN","ACORDO_LEN","TRATAMENTO","PRECO_TRAT","DESCONTO_TRAT","ACORDO_TRAT","MONTAGEM","PRECO_MONT","DESCONTO_MONT","ACORDO_MONT","ACORDO_TOTAL","CHAVE","PDC")           
+
+combinados_g244_pvo <-
+combinados_g244_pvo %>% rename_with(~ new_column_names, .cols = everything())
+
 
 View(combinados_g244_pvo)
 
 combinados_g244_pvo %>% filter(!is.na(PDC))%>% View()
 
 # RELREPRO ==================================
+
+## LENTES COM TRATAMENTO ====================================================
 
 ## LENTES 100 VLX XR =====================================================================
 
@@ -258,7 +258,7 @@ cross_join(
 relrepro_103_G244 <- 
 
 # lentes
-  acordos_relrepro_G244 %>% filter(TBPCODIGO==103) %>% filter(substr(PROCODIGO, 1, 1) != "T") %>% select(PROCODIGO,DESCONTO) %>% left_join(.,premp %>% mutate(PROCODIGO=trimws(PROCODIGO)),by="PROCODIGO") %>% filter(!is.na(PRECO)) %>% 
+  acordos_relrepro_G244 %>% filter(TBPCODIGO==103) %>% filter(substr(PROCODIGO, 1, 1) != "T") %>% select(PROCODIGO,DESCONTO) %>% left_join(.,premp %>% mutate(PROCODIGO=trimws(PROCODIGO)),by="PROCODIGO") %>% filter(!is.na(PRECO)) %>% left_join(.,prod,by="PROCODIGO") %>% 
 
   #calc
   
@@ -291,7 +291,7 @@ relrepro_103_G244 <-
 relrepro_104_G244 <-
 
 # lentes
-acordos_relrepro_G244 %>% filter(TBPCODIGO==104) %>% filter(substr(PROCODIGO, 1, 1) != "T") %>% select(PROCODIGO,DESCONTO) %>% left_join(.,premp %>% mutate(PROCODIGO=trimws(PROCODIGO)),by="PROCODIGO") %>% filter(!is.na(PRECO)) %>% 
+acordos_relrepro_G244 %>% filter(TBPCODIGO==104) %>% filter(substr(PROCODIGO, 1, 1) != "T") %>% select(PROCODIGO,DESCONTO) %>% left_join(.,premp %>% mutate(PROCODIGO=trimws(PROCODIGO)),by="PROCODIGO") %>% filter(!is.na(PRECO)) %>% left_join(.,prod,by="PROCODIGO") %>% 
   
   #calc
   
@@ -653,7 +653,7 @@ mutate(ACORDO=PRECO*(1-DESCONTO/100)) %>%
 ## LENTES MULTIFOCAIS SEM TRATAMENTO ============================================
   
 
-# VARILUX  TRAD ======================
+# VARILUX  TRAD 101 ST ======================
   
   relrepro_101_ST_G244 <- 
   
@@ -685,7 +685,7 @@ mutate(ACORDO=PRECO*(1-DESCONTO/100)) %>%
   View(relrepro_101_ST_G244)
 
   
-  # VARILUX  DIGI =============================
+  # VARILUX  DIGI 102 ST  =============================
   
   relrepro_102_ST_G244 <- 
     
@@ -719,7 +719,7 @@ mutate(ACORDO=PRECO*(1-DESCONTO/100)) %>%
   View(relrepro_102_ST_G244)
   
   
-  # KODAK TRAD ========================================
+  # KODAK TRAD 201 ST ========================================
   
   
   relrepro_201_ST_G244  <- 
@@ -752,9 +752,9 @@ mutate(ACORDO=PRECO*(1-DESCONTO/100)) %>%
   View(relrepro_201_ST_G244)
 
 
-  # KODAK  DIGI =============================
+  # KODAK  DIGI 202 ST =============================
   
-  relrepro_102_ST_G244 <- 
+  relrepro_202_ST_G244 <- 
     
     # lentes
     acordos_relrepro_G244 %>% filter(TBPCODIGO==202) %>% filter(substr(PROCODIGO, 1, 1) != "T") %>% select(PROCODIGO,DESCONTO) %>% left_join(.,premp %>% mutate(PROCODIGO=trimws(PROCODIGO)),by="PROCODIGO") %>% filter(!is.na(PRECO)) %>% rename(PROCODIGO=PROCODIGO) %>% left_join(.,prod,by="PROCODIGO") %>% 
@@ -781,6 +781,53 @@ mutate(ACORDO=PRECO*(1-DESCONTO/100)) %>%
     left_join(.,pdc_df2 %>% select(CHAVE,PDC),by="CHAVE") 
   
   
-  View(relrepro_102_ST_G244)
+  View(relrepro_202_ST_G244)
+  
+## MERGE BASES ====================================================
+
+  
+# RELREPRO TRAT    
+relrepro_trat_G244 <-   
+    
+ union_all(relrepro_100_G244,relrepro_101_G244) %>% 
+  union_all(.,relrepro_102_G244) %>%     
+   union_all(.,relrepro_201_G244) %>%   
+    union_all(.,relrepro_202_G244) %>%
+     union_all(.,relrepro_304_G244) %>% 
+      union_all(.,relrepro_305_G244) %>%
+       union_all(.,relrepro_308_G244) %>%
+        union_all(.,relrepro_309_G244) %>% 
+         select(PRODESCRICAO,PROCODIGOA,PRECO.x,DESCONTO.x,ACORDOA,PROCODIGOB,PRECO.y,DESCONTO.y,ACORDOB,ACORDOB,MONTAGEM,PRECO,TBPPCDESCTO2,VALOR_ACORDO_MONTAGEM,VALOR_FINAL,CHAVE,PDC)     
+
+
+  
+new_column_names <- c("LENTE","PROCODIGOA","PRECO_LEN","DESCONTO_LEN","ACORDO_LEN","TRATAMENTO","PRECO_TRAT","DESCONTO_TRAT","ACORDO_TRAT","MONTAGEM","PRECO_MONT","DESCONTO_MONT","ACORDO_MONT","ACORDO_TOTAL","CHAVE","PDC")           
+
+relrepro_trat_G244 <-
+  relrepro_trat_G244 %>% rename_with(~ new_column_names, .cols = everything())
+
+View(relrepro_trat_G244)
+
+# RELREPRO LA  
+
+relrepro_LA_G244 <-    
+
+  union_all(relrepro_103_G244,relrepro_104_G244) %>% 
+   union_all(.,relrepro_3660_G244) %>%     
+    union_all(.,relrepro_3661_G244) 
+
+View(relrepro_LA_G244)
+
+
+# RELREPRO SEM TRAT  
+
+relrepro_ST_G244 <- 
+  
+ union_all(relrepro_101_ST_G244,relrepro_102_ST_G244) %>% 
+  union_all(.,relrepro_201_ST_G244) %>%     
+   union_all(.,relrepro_202_ST_G244) 
+  
+  View(relrepro_ST_G244)
+  
 
 
