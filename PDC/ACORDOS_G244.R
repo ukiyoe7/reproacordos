@@ -786,7 +786,7 @@ mutate(ACORDO=PRECO*(1-DESCONTO/100)) %>%
 ## MERGE BASES ====================================================
 
   
-# RELREPRO TRAT    
+# RELREPRO TRAT ================   
 relrepro_trat_G244 <-   
     
  union_all(relrepro_100_G244,relrepro_101_G244) %>% 
@@ -809,7 +809,7 @@ relrepro_trat_G244 <-
 View(relrepro_trat_G244)
 
 
-# JOIN TAB COMB
+# JOIN TAB COMB =====================
 
   
 pvo_relrepro_trat_g244 <-   
@@ -820,7 +820,7 @@ union_all(relrepro_trat_G244,relrepro_trat_G244) %>%
 View(pvo_relrepro_trat_g244)
   
 
-# RELREPRO LA  
+# RELREPRO LA  ==========================
 
 relrepro_LA_G244 <-    
 
@@ -838,7 +838,7 @@ relrepro_LA_G244 <-
 View(relrepro_LA_G244)
 
 
-# RELREPRO SEM TRAT  
+# RELREPRO SEM TRAT  ===========================
 
 relrepro_ST_G244 <- 
   
@@ -854,7 +854,20 @@ relrepro_ST_G244 <-
   
   View(relrepro_ST_G244)
   
-## AJUSTES
+  
+# UNION RELREPRO LA + SEM TRAT
+  
+union_relrepro_LA_G244_relrepro_ST_G244 <-  
+union_all(relrepro_LA_G244,relrepro_ST_G244)  
+  
+  
+## CSV  
+  
+  pvo_relrepro_trat_g244 %>% write.csv2(.,file="C:\\Users\\REPRO SANDRO\\Documents\\R\\ACORDOS\\PDC\\pvo_relrepro_trat_g244.csv",row.names = FALSE,na="") 
+  
+  union_relrepro_LA_G244_relrepro_ST_G244 %>% write.csv2(.,file="C:\\Users\\REPRO SANDRO\\Documents\\R\\ACORDOS\\PDC\\union_relrepro_LA_G244_relrepro_ST_G244.csv",row.names = FALSE,na="")
+  
+## AJUSTES ========================================
   
 -- face interna
 -- colorações
