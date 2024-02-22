@@ -140,9 +140,11 @@ combinados_g244_pvo %>% filter(!is.na(PDC))%>% View()
 
 ## LENTES 100 VLX XR =====================================================================
 
+relrepro_100_G244 <- 
+
 # lentes
 cross_join(
-  acordos_relrepro_G244 %>% filter(TBPCODIGO==100) %>% filter(substr(PROCODIGO, 1, 1) != "T") %>% select(PROCODIGO,DESCONTO) %>% left_join(.,premp %>% mutate(PROCODIGO=trimws(PROCODIGO)),by="PROCODIGO") %>% filter(!is.na(PRECO)) %>% rename(PROCODIGOA=PROCODIGO)
+  acordos_relrepro_G244 %>% filter(TBPCODIGO==100) %>% filter(substr(PROCODIGO, 1, 1) != "T") %>% select(PROCODIGO,DESCONTO) %>% left_join(.,premp %>% mutate(PROCODIGO=trimws(PROCODIGO)),by="PROCODIGO") %>% filter(!is.na(PRECO)) %>% rename(PROCODIGOA=PROCODIGO) %>%  left_join(.,prod,by=c("PROCODIGOA"="PROCODIGO"))
   ,
   
   #trat
@@ -170,15 +172,16 @@ cross_join(
   mutate(CHAVE=str_trim(paste0(PROCODIGOA,PROCODIGOB,MONTAGEM))) %>% 
   
   # get pdc
-  left_join(.,pdc_df2 %>% select(CHAVE,PDC),by="CHAVE") %>% 
+  left_join(.,pdc_df2 %>% select(CHAVE,PDC),by="CHAVE") 
   
-  View()
+  View(relrepro_100_G244)
 
 ## LENTES 101 VLX TRAD =====================================================================
 
+relrepro_101_G244 <-
 # lentes
 cross_join(
-  acordos_relrepro_G244 %>% filter(TBPCODIGO==101) %>% filter(substr(PROCODIGO, 1, 1) != "T") %>% select(PROCODIGO,DESCONTO) %>% left_join(.,premp %>% mutate(PROCODIGO=trimws(PROCODIGO)),by="PROCODIGO") %>% filter(!is.na(PRECO)) %>% rename(PROCODIGOA=PROCODIGO)
+  acordos_relrepro_G244 %>% filter(TBPCODIGO==101) %>% filter(substr(PROCODIGO, 1, 1) != "T") %>% select(PROCODIGO,DESCONTO) %>% left_join(.,premp %>% mutate(PROCODIGO=trimws(PROCODIGO)),by="PROCODIGO") %>% filter(!is.na(PRECO)) %>% rename(PROCODIGOA=PROCODIGO) %>% left_join(.,prod,by=c("PROCODIGOA"="PROCODIGO"))
   ,
   
   #trat
@@ -206,16 +209,18 @@ cross_join(
   mutate(CHAVE=str_trim(paste0(PROCODIGOA,PROCODIGOB,MONTAGEM))) %>% 
   
   # get pdc
-  left_join(.,pdc_df2 %>% select(CHAVE,PDC),by="CHAVE") %>% 
+  left_join(.,pdc_df2 %>% select(CHAVE,PDC),by="CHAVE") 
   
   
-  View()
+  View(relrepro_101_G244)
 
 ## LENTES 102 VLX DIGI =====================================================================
 
+relrepro_102_G244 <-
+
 # lentes
 cross_join(
-  acordos_relrepro_G244 %>% filter(TBPCODIGO==102) %>% filter(substr(PROCODIGO, 1, 1) != "T") %>% select(PROCODIGO,DESCONTO) %>% left_join(.,premp %>% mutate(PROCODIGO=trimws(PROCODIGO)),by="PROCODIGO") %>% filter(!is.na(PRECO)) %>% rename(PROCODIGOA=PROCODIGO)
+  acordos_relrepro_G244 %>% filter(TBPCODIGO==102) %>% filter(substr(PROCODIGO, 1, 1) != "T") %>% select(PROCODIGO,DESCONTO) %>% left_join(.,premp %>% mutate(PROCODIGO=trimws(PROCODIGO)),by="PROCODIGO") %>% filter(!is.na(PRECO)) %>% rename(PROCODIGOA=PROCODIGO) %>% left_join(.,prod,by=c("PROCODIGOA"="PROCODIGO"))
   ,
   
   #trat
@@ -243,12 +248,14 @@ cross_join(
   mutate(CHAVE=str_trim(paste0(PROCODIGOA,PROCODIGOB,MONTAGEM))) %>% 
   
   # get pdc
-  left_join(.,pdc_df2 %>% select(CHAVE,PDC),by="CHAVE") %>% 
+  left_join(.,pdc_df2 %>% select(CHAVE,PDC),by="CHAVE") 
   
-  View()
+  View(relrepro_102_G244)
 
 
 ## LENTES 103 LA CRIZAL =====================================================================
+
+relrepro_103_G244 <- 
 
 # lentes
   acordos_relrepro_G244 %>% filter(TBPCODIGO==103) %>% filter(substr(PROCODIGO, 1, 1) != "T") %>% select(PROCODIGO,DESCONTO) %>% left_join(.,premp %>% mutate(PROCODIGO=trimws(PROCODIGO)),by="PROCODIGO") %>% filter(!is.na(PRECO)) %>% 
@@ -272,11 +279,16 @@ cross_join(
   mutate(CHAVE=str_trim(paste0(PROCODIGO,MONTAGEM))) %>% 
   
   # get pdc
-  left_join(.,pdc_df2 %>% select(CHAVE,PDC),by="CHAVE") %>% 
+  left_join(.,pdc_df2 %>% select(CHAVE,PDC),by="CHAVE") 
   
-  View()
+  View(relrepro_103_G244)
+
 
 ## LENTES 104 LA KODAK =====================================================================
+
+
+
+relrepro_104_G244 <-
 
 # lentes
 acordos_relrepro_G244 %>% filter(TBPCODIGO==104) %>% filter(substr(PROCODIGO, 1, 1) != "T") %>% select(PROCODIGO,DESCONTO) %>% left_join(.,premp %>% mutate(PROCODIGO=trimws(PROCODIGO)),by="PROCODIGO") %>% filter(!is.na(PRECO)) %>% 
@@ -300,17 +312,19 @@ acordos_relrepro_G244 %>% filter(TBPCODIGO==104) %>% filter(substr(PROCODIGO, 1,
   mutate(CHAVE=str_trim(paste0(PROCODIGO,MONTAGEM))) %>% 
   
   # get pdc
-  left_join(.,pdc_df2 %>% select(CHAVE,PDC),by="CHAVE") %>% 
+  left_join(.,pdc_df2 %>% select(CHAVE,PDC),by="CHAVE")
   
-  View()
-
+  View(relrepro_104_G244)
 
 
 ## LENTES 201 KODAK TRAD  =====================================================================
 
+
+relrepro_201_G244 <- 
+
 # lentes
 cross_join(
-acordos_relrepro_G244 %>% filter(TBPCODIGO==201) %>% filter(substr(PROCODIGO, 1, 1) != "T") %>% select(PROCODIGO,DESCONTO) %>% left_join(.,premp %>% mutate(PROCODIGO=trimws(PROCODIGO)),by="PROCODIGO") %>% filter(!is.na(PRECO)) %>% rename(PROCODIGOA=PROCODIGO)
+acordos_relrepro_G244 %>% filter(TBPCODIGO==201) %>% filter(substr(PROCODIGO, 1, 1) != "T") %>% select(PROCODIGO,DESCONTO) %>% left_join(.,premp %>% mutate(PROCODIGO=trimws(PROCODIGO)),by="PROCODIGO") %>% filter(!is.na(PRECO)) %>% rename(PROCODIGOA=PROCODIGO) %>%  left_join(.,prod,by=c("PROCODIGOA"="PROCODIGO"))
   ,
 
 #trat
@@ -338,16 +352,18 @@ mutate(ACORDOA=PRECO.x*(1-DESCONTO.x/100)) %>% mutate(ACORDOB=PRECO.y*(1-DESCONT
   mutate(CHAVE=str_trim(paste0(PROCODIGOA,PROCODIGOB,MONTAGEM))) %>% 
   
   # get pdc
-  left_join(.,pdc_df2 %>% select(CHAVE,PDC),by="CHAVE") %>% 
+  left_join(.,pdc_df2 %>% select(CHAVE,PDC),by="CHAVE") 
   
-  View()
+  View(relrepro_201_G244)
 
 
 ## LENTES 202 KODAK DIGI =====================================================================
 
+relrepro_202_G244 <- 
+
 # lentes
 cross_join(
-  acordos_relrepro_G244 %>% filter(TBPCODIGO==202) %>% filter(substr(PROCODIGO, 1, 1) != "T") %>% select(PROCODIGO,DESCONTO) %>% left_join(.,premp %>% mutate(PROCODIGO=trimws(PROCODIGO)),by="PROCODIGO") %>% filter(!is.na(PRECO)) %>% rename(PROCODIGOA=PROCODIGO)
+  acordos_relrepro_G244 %>% filter(TBPCODIGO==202) %>% filter(substr(PROCODIGO, 1, 1) != "T") %>% select(PROCODIGO,DESCONTO) %>% left_join(.,premp %>% mutate(PROCODIGO=trimws(PROCODIGO)),by="PROCODIGO") %>% filter(!is.na(PRECO)) %>% rename(PROCODIGOA=PROCODIGO) %>%  left_join(.,prod,by=c("PROCODIGOA"="PROCODIGO"))
   ,
   
   #trat
@@ -375,16 +391,18 @@ cross_join(
   mutate(CHAVE=str_trim(paste0(PROCODIGOA,PROCODIGOB,MONTAGEM))) %>% 
   
   # get pdc
-  left_join(.,pdc_df2 %>% select(CHAVE,PDC),by="CHAVE") %>% 
+  left_join(.,pdc_df2 %>% select(CHAVE,PDC),by="CHAVE")
   
-  View()
+  View(relrepro_202_G244)
 
 
 ## LENTES 304 ACTUALITE =====================================================================
 
+relrepro_304_G244 <-
+
 # lentes
 cross_join(
-  acordos_relrepro_G244 %>% filter(TBPCODIGO==304) %>% filter(substr(PROCODIGO, 1, 1) != "T") %>% select(PROCODIGO,DESCONTO) %>% left_join(.,premp %>% mutate(PROCODIGO=trimws(PROCODIGO)),by="PROCODIGO") %>% filter(!is.na(PRECO)) %>% rename(PROCODIGOA=PROCODIGO)
+  acordos_relrepro_G244 %>% filter(TBPCODIGO==304) %>% filter(substr(PROCODIGO, 1, 1) != "T") %>% select(PROCODIGO,DESCONTO) %>% left_join(.,premp %>% mutate(PROCODIGO=trimws(PROCODIGO)),by="PROCODIGO") %>% filter(!is.na(PRECO)) %>% rename(PROCODIGOA=PROCODIGO) %>% left_join(.,prod,by=c("PROCODIGOA"="PROCODIGO"))
   ,
   
   #trat
@@ -412,15 +430,17 @@ cross_join(
   mutate(CHAVE=str_trim(paste0(PROCODIGOA,PROCODIGOB,MONTAGEM))) %>% 
   
   # get pdc
-  left_join(.,pdc_df2 %>% select(CHAVE,PDC),by="CHAVE") %>% 
+  left_join(.,pdc_df2 %>% select(CHAVE,PDC),by="CHAVE") 
   
-  View()
+  View(relrepro_304_G244)
 
 ## LENTES 305 AVANCE =====================================================================
 
+relrepro_305_G244 <- 
+
 # lentes
 cross_join(
-  acordos_relrepro_G244 %>% filter(TBPCODIGO==305) %>% filter(substr(PROCODIGO, 1, 1) != "T") %>% select(PROCODIGO,DESCONTO) %>% left_join(.,premp %>% mutate(PROCODIGO=trimws(PROCODIGO)),by="PROCODIGO") %>% filter(!is.na(PRECO)) %>% rename(PROCODIGOA=PROCODIGO)
+  acordos_relrepro_G244 %>% filter(TBPCODIGO==305) %>% filter(substr(PROCODIGO, 1, 1) != "T") %>% select(PROCODIGO,DESCONTO) %>% left_join(.,premp %>% mutate(PROCODIGO=trimws(PROCODIGO)),by="PROCODIGO") %>% filter(!is.na(PRECO)) %>% rename(PROCODIGOA=PROCODIGO) %>% left_join(.,prod,by=c("PROCODIGOA"="PROCODIGO"))
   ,
   
   #trat
@@ -448,16 +468,18 @@ cross_join(
   mutate(CHAVE=str_trim(paste0(PROCODIGOA,PROCODIGOB,MONTAGEM))) %>% 
   
   # get pdc
-  left_join(.,pdc_df2 %>% select(CHAVE,PDC),by="CHAVE") %>% 
+  left_join(.,pdc_df2 %>% select(CHAVE,PDC),by="CHAVE") 
   
-  View()
+  View(relrepro_305_G244)
 
 
 ## LENTES 308 INSIGNE =====================================================================
 
+relrepro_308_G244 <-
+
 # lentes
 cross_join(
-  acordos_relrepro_G244 %>% filter(TBPCODIGO==308) %>% filter(substr(PROCODIGO, 1, 1) != "T") %>% select(PROCODIGO,DESCONTO) %>% left_join(.,premp %>% mutate(PROCODIGO=trimws(PROCODIGO)),by="PROCODIGO") %>% filter(!is.na(PRECO)) %>% rename(PROCODIGOA=PROCODIGO)
+  acordos_relrepro_G244 %>% filter(TBPCODIGO==308) %>% filter(substr(PROCODIGO, 1, 1) != "T") %>% select(PROCODIGO,DESCONTO) %>% left_join(.,premp %>% mutate(PROCODIGO=trimws(PROCODIGO)),by="PROCODIGO") %>% filter(!is.na(PRECO)) %>% rename(PROCODIGOA=PROCODIGO) %>% left_join(.,prod,by=c("PROCODIGOA"="PROCODIGO"))
   ,
   
   #trat
@@ -485,15 +507,17 @@ cross_join(
   mutate(CHAVE=str_trim(paste0(PROCODIGOA,PROCODIGOB,MONTAGEM))) %>% 
   
   # get pdc
-  left_join(.,pdc_df2 %>% select(CHAVE,PDC),by="CHAVE") %>% 
+  left_join(.,pdc_df2 %>% select(CHAVE,PDC),by="CHAVE")
   
-  View()
+  View(relrepro_308_G244)
 
 ## LENTES 309 EYEZEN =====================================================================
 
+
+relrepro_309_G244 <-
 # lentes
 cross_join(
-  acordos_relrepro_G244 %>% filter(TBPCODIGO==309) %>% filter(substr(PROCODIGO, 1, 1) != "T") %>% select(PROCODIGO,DESCONTO) %>% left_join(.,premp %>% mutate(PROCODIGO=trimws(PROCODIGO)),by="PROCODIGO") %>% filter(!is.na(PRECO)) %>% rename(PROCODIGOA=PROCODIGO)
+  acordos_relrepro_G244 %>% filter(TBPCODIGO==309) %>% filter(substr(PROCODIGO, 1, 1) != "T") %>% select(PROCODIGO,DESCONTO) %>% left_join(.,premp %>% mutate(PROCODIGO=trimws(PROCODIGO)),by="PROCODIGO") %>% filter(!is.na(PRECO)) %>% rename(PROCODIGOA=PROCODIGO) %>%  left_join(.,prod,by=c("PROCODIGOA"="PROCODIGO"))
   ,
   
   #trat
@@ -521,15 +545,17 @@ cross_join(
   mutate(CHAVE=str_trim(paste0(PROCODIGOA,PROCODIGOB,MONTAGEM))) %>% 
   
   # get pdc
-  left_join(.,pdc_df2 %>% select(CHAVE,PDC),by="CHAVE") %>% 
+  left_join(.,pdc_df2 %>% select(CHAVE,PDC),by="CHAVE") 
   
-  View()
+  View(relrepro_309_G244)
 
 ## LENTES VLX 313 PRIMO =====================================================================
 
+
+relrepro_313_G244 <- 
 # lentes
 cross_join(
-  acordos_relrepro_G244 %>% filter(TBPCODIGO==313) %>% filter(substr(PROCODIGO, 1, 1) != "T") %>% select(PROCODIGO,DESCONTO) %>% left_join(.,premp %>% mutate(PROCODIGO=trimws(PROCODIGO)),by="PROCODIGO") %>% filter(!is.na(PRECO)) %>% rename(PROCODIGOA=PROCODIGO)
+  acordos_relrepro_G244 %>% filter(TBPCODIGO==313) %>% filter(substr(PROCODIGO, 1, 1) != "T") %>% select(PROCODIGO,DESCONTO) %>% left_join(.,premp %>% mutate(PROCODIGO=trimws(PROCODIGO)),by="PROCODIGO") %>% filter(!is.na(PRECO)) %>% rename(PROCODIGOA=PROCODIGO) %>% left_join(.,prod,by=c("PROCODIGOA"="PROCODIGO")) 
   ,
   
   #trat
@@ -557,14 +583,18 @@ cross_join(
   mutate(CHAVE=str_trim(paste0(PROCODIGOA,PROCODIGOB,MONTAGEM))) %>% 
   
   # get pdc
-  left_join(.,pdc_df2 %>% select(CHAVE,PDC),by="CHAVE") %>% 
+  left_join(.,pdc_df2 %>% select(CHAVE,PDC),by="CHAVE") 
   
-  View()
+  View(relrepro_313_G244)
+  
+  
 
-## LENTES 3660 =====================================================================
+## LENTES 3660 PROSING =====================================================================
+
+relrepro_3660_G244 <- 
 
 # lentes
-acordos_relrepro_G244 %>% filter(TBPCODIGO==3660) %>% filter(substr(PROCODIGO, 1, 1) != "T") %>% select(PROCODIGO,DESCONTO) %>% left_join(.,premp %>% mutate(PROCODIGO=trimws(PROCODIGO)),by="PROCODIGO") %>% filter(!is.na(PRECO)) %>% 
+acordos_relrepro_G244 %>% filter(TBPCODIGO==3660) %>% filter(substr(PROCODIGO, 1, 1) != "T") %>% select(PROCODIGO,DESCONTO) %>% left_join(.,premp %>% mutate(PROCODIGO=trimws(PROCODIGO)),by="PROCODIGO") %>% filter(!is.na(PRECO)) %>% left_join(.,prod,by="PROCODIGO") %>% 
 
 #calc
 
@@ -585,16 +615,16 @@ mutate(ACORDO=PRECO*(1-DESCONTO/100)) %>%
   mutate(CHAVE=str_trim(paste0(PROCODIGO,MONTAGEM))) %>% 
   
   # get pdc
-  left_join(.,pdc_df2 %>% select(CHAVE,PDC),by="CHAVE") %>% 
+  left_join(.,pdc_df2 %>% select(CHAVE,PDC),by="CHAVE") 
   
-  View()
+  View(relrepro_3660_G244)
 
-## LENTES 3661 =====================================================================
+## LENTES 3661 PROSING 2 =====================================================================
 
 relrepro_3661_G244 <- 
 
 # lentes
-acordos_relrepro_G244 %>% filter(TBPCODIGO==3661) %>% filter(substr(PROCODIGO, 1, 1) != "T") %>% select(PROCODIGO,DESCONTO) %>% left_join(.,premp %>% mutate(PROCODIGO=trimws(PROCODIGO)),by="PROCODIGO") %>% filter(!is.na(PRECO)) %>% 
+acordos_relrepro_G244 %>% filter(TBPCODIGO==3661) %>% filter(substr(PROCODIGO, 1, 1) != "T") %>% select(PROCODIGO,DESCONTO) %>% left_join(.,premp %>% mutate(PROCODIGO=trimws(PROCODIGO)),by="PROCODIGO") %>% filter(!is.na(PRECO)) %>% left_join(.,prod,by="PROCODIGO") %>% 
 
 #calc
 
@@ -615,37 +645,142 @@ mutate(ACORDO=PRECO*(1-DESCONTO/100)) %>%
   mutate(CHAVE=str_trim(paste0(PROCODIGO,MONTAGEM))) %>% 
   
   # get pdc
-  left_join(.,pdc_df2 %>% select(CHAVE,PDC),by="CHAVE") %>% 
+  left_join(.,pdc_df2 %>% select(CHAVE,PDC),by="CHAVE") 
   
   View(relrepro_3661_G244)
 
-## LENTES MULTIFOCAIS SEM TRATAMENTO ===========================================
-
-
-lentes_mf_sem_ar <-
-
- # extrai todas multifocais    
-dbGetQuery(con2,"SELECT PROCODIGO,PRODESCRICAO FROM PRODU 
-                   WHERE GR1CODIGO<>17 AND PROSITUACAO='A'
-                    AND PROCODIGO2 IS NULL AND GR2CODIGO=1 AND PROCODIGO
-                     NOT IN (SELECT PROCODIGO FROM NGRUPOS WHERE GRCODIGO=162) ") %>% 
-                      mutate(PROCODIGO=trimws(PROCODIGO)) %>% 
   
-  # acordo relrepro
-  left_join(.,acordos_relrepro_G244 ,by=c("PROCODIGO"="PROCODIGO")) %>% 
+## LENTES MULTIFOCAIS SEM TRATAMENTO ============================================
+  
+
+# VARILUX  TRAD ======================
+  
+  relrepro_101_ST_G244 <- 
+  
+    # lentes
+      acordos_relrepro_G244 %>% filter(TBPCODIGO==101) %>% filter(substr(PROCODIGO, 1, 1) != "T") %>% select(PROCODIGO,DESCONTO) %>% left_join(.,premp %>% mutate(PROCODIGO=trimws(PROCODIGO)),by="PROCODIGO") %>% filter(!is.na(PRECO)) %>% rename(PROCODIGO=PROCODIGO) %>% left_join(.,prod,by="PROCODIGO") %>% 
+  
+    #calc
+    
+    mutate(ACORDO=PRECO*(1-DESCONTO/100)) %>%    
+    
+    # adiciona montagem
+    mutate(MONTAGEM='MOMF') %>% left_join(.,premp %>% mutate(PROCODIGO=trimws(PROCODIGO)),by=c("MONTAGEM"="PROCODIGO")) %>% 
+    
+    # acordos montagens
+    left_join(.,acordos_tab_G244 %>% mutate(PROCODIGO=trimws(PROCODIGO)) %>% select(PROCODIGO,TBPPCDESCTO2),by=c("MONTAGEM"="PROCODIGO")) %>% 
+    mutate(VALOR_ACORDO_MONTAGEM=PRECO.y*(1-(TBPPCDESCTO2/100))) %>% 
+    
+    
+    # calculo total
+    mutate(VALOR_FINAL=ACORDO+VALOR_ACORDO_MONTAGEM) %>% 
+    
+    # chave pdc
+    mutate(CHAVE=str_trim(paste0(PROCODIGO,MONTAGEM))) %>% 
+    
+    # get pdc
+    left_join(.,pdc_df2 %>% select(CHAVE,PDC),by="CHAVE") 
   
   
+  View(relrepro_101_ST_G244)
+
+  
+  # VARILUX  DIGI =============================
+  
+  relrepro_102_ST_G244 <- 
+    
+    # lentes
+    acordos_relrepro_G244 %>% filter(TBPCODIGO==102) %>% filter(substr(PROCODIGO, 1, 1) != "T") %>% select(PROCODIGO,DESCONTO) %>% left_join(.,premp %>% mutate(PROCODIGO=trimws(PROCODIGO)),by="PROCODIGO") %>% filter(!is.na(PRECO)) %>% rename(PROCODIGO=PROCODIGO) %>% left_join(.,prod,by="PROCODIGO") %>% 
+    
+     filter(str_detect(PRODESCRICAO,"COMFORT | LIBERTY" )) %>% 
+    
+    #calc
+    
+    mutate(ACORDO=PRECO*(1-DESCONTO/100)) %>%    
+    
+    # adiciona montagem
+    mutate(MONTAGEM='MOMF') %>% left_join(.,premp %>% mutate(PROCODIGO=trimws(PROCODIGO)),by=c("MONTAGEM"="PROCODIGO")) %>% 
+    
+    # acordos montagens
+    left_join(.,acordos_tab_G244 %>% mutate(PROCODIGO=trimws(PROCODIGO)) %>% select(PROCODIGO,TBPPCDESCTO2),by=c("MONTAGEM"="PROCODIGO")) %>% 
+    mutate(VALOR_ACORDO_MONTAGEM=PRECO.y*(1-(TBPPCDESCTO2/100))) %>% 
+    
+    
+    # calculo total
+    mutate(VALOR_FINAL=ACORDO+VALOR_ACORDO_MONTAGEM) %>% 
+    
+    # chave pdc
+    mutate(CHAVE=str_trim(paste0(PROCODIGO,MONTAGEM))) %>% 
+    
+    # get pdc
+    left_join(.,pdc_df2 %>% select(CHAVE,PDC),by="CHAVE") 
   
   
-  # calc acordo comb
-  mutate(VALOR_ACORDO=CCPCOVENDAPROA2*(1-(DESCONTO/100))*2+CCPCOVENDAPROB2*(1-(DESCONTO/100))) %>% 
+  View(relrepro_102_ST_G244)
+  
+  
+  # KODAK TRAD ========================================
+  
+  
+  relrepro_201_ST_G244  <- 
+  
+  # lentes
+  acordos_relrepro_G244 %>% filter(TBPCODIGO==201) %>% filter(substr(PROCODIGO, 1, 1) != "T") %>% select(PROCODIGO,DESCONTO) %>% left_join(.,premp %>% mutate(PROCODIGO=trimws(PROCODIGO)),by="PROCODIGO") %>% filter(!is.na(PRECO)) %>% rename(PROCODIGO=PROCODIGO) %>% left_join(.,prod,by="PROCODIGO") %>% 
+    
+    #calc
+    
+    mutate(ACORDO=PRECO*(1-DESCONTO/100)) %>%    
+    
+    # adiciona montagem
+    mutate(MONTAGEM='MOMF') %>% left_join(.,premp %>% mutate(PROCODIGO=trimws(PROCODIGO)),by=c("MONTAGEM"="PROCODIGO")) %>% 
+    
+    # acordos montagens
+    left_join(.,acordos_tab_G244 %>% mutate(PROCODIGO=trimws(PROCODIGO)) %>% select(PROCODIGO,TBPPCDESCTO2),by=c("MONTAGEM"="PROCODIGO")) %>% 
+    mutate(VALOR_ACORDO_MONTAGEM=PRECO.y*(1-(TBPPCDESCTO2/100))) %>% 
+    
+    
+    # calculo total
+    mutate(VALOR_FINAL=ACORDO+VALOR_ACORDO_MONTAGEM) %>% 
+    
+    # chave pdc
+    mutate(CHAVE=str_trim(paste0(PROCODIGO,MONTAGEM))) %>% 
+    
+    # get pdc
+    left_join(.,pdc_df2 %>% select(CHAVE,PDC),by="CHAVE") 
+  
+  
+  View(relrepro_201_ST_G244)
 
 
-View(lentes_mf_sem_ar)
-
-
-
-
-
+  # KODAK  DIGI =============================
+  
+  relrepro_102_ST_G244 <- 
+    
+    # lentes
+    acordos_relrepro_G244 %>% filter(TBPCODIGO==202) %>% filter(substr(PROCODIGO, 1, 1) != "T") %>% select(PROCODIGO,DESCONTO) %>% left_join(.,premp %>% mutate(PROCODIGO=trimws(PROCODIGO)),by="PROCODIGO") %>% filter(!is.na(PRECO)) %>% rename(PROCODIGO=PROCODIGO) %>% left_join(.,prod,by="PROCODIGO") %>% 
+    
+    #calc
+    
+    mutate(ACORDO=PRECO*(1-DESCONTO/100)) %>%    
+    
+    # adiciona montagem
+    mutate(MONTAGEM='MOMF') %>% left_join(.,premp %>% mutate(PROCODIGO=trimws(PROCODIGO)),by=c("MONTAGEM"="PROCODIGO")) %>% 
+    
+    # acordos montagens
+    left_join(.,acordos_tab_G244 %>% mutate(PROCODIGO=trimws(PROCODIGO)) %>% select(PROCODIGO,TBPPCDESCTO2),by=c("MONTAGEM"="PROCODIGO")) %>% 
+    mutate(VALOR_ACORDO_MONTAGEM=PRECO.y*(1-(TBPPCDESCTO2/100))) %>% 
+    
+    
+    # calculo total
+    mutate(VALOR_FINAL=ACORDO+VALOR_ACORDO_MONTAGEM) %>% 
+    
+    # chave pdc
+    mutate(CHAVE=str_trim(paste0(PROCODIGO,MONTAGEM))) %>% 
+    
+    # get pdc
+    left_join(.,pdc_df2 %>% select(CHAVE,PDC),by="CHAVE") 
+  
+  
+  View(relrepro_102_ST_G244)
 
 
