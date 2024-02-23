@@ -1,4 +1,4 @@
-## ACORDOS
+## BASE DE ACORDOS PDC
 
 
 # LIBS ==================================================
@@ -10,6 +10,34 @@ library(readr)
 
 
 con2 <- dbConnect(odbc::odbc(), "repro",encoding="Latin1")
+
+## PRODUTOS =======================================================
+
+produ <- 
+  dbGetQuery(con2," WITH PRECO AS(SELECT PROCODIGO,PREPCOVENDA,PREPCOVENDA2 FROM PREMP WHERE EMPCODIGO=1)
+               
+               SELECT PD.PROCODIGO,
+                           PRODESCRICAO,
+                             GR1CODIGO,
+                              GR2CODIGO,
+                              TPLCODIGO,
+                               PD.MARCODIGO,
+                                MARNOME MARCA,
+                                 PROTIPO,
+                                  PROUN,
+                                  PREPCOVENDA,
+                                   PREPCOVENDA2,
+                                    PREPCOVENDA*2 PAR_ATC,
+                                     PREPCOVENDA2*2 PAR_LAB
+               FROM PRODU PD
+               
+               INNER JOIN PRECO P ON PD.PROCODIGO=P.PROCODIGO
+               LEFT JOIN MARCA M ON PD.MARCODIGO=M.MARCODIGO 
+               WHERE GR1CODIGO<>17 AND PROSITUACAO='A'
+                 AND PROCODIGO2 IS NULL") %>% mutate(PROCODIGO=trimws(PROCODIGO))
+
+View(produ)  
+
 
 ## ACORDO GERAL =====================================================
 
@@ -72,6 +100,40 @@ View(combinados_g244)
 
 
 combinados_g244 %>% filter(TBPCODIGO==1) %>% left_join(.,prod,by=c("PROCODIGOA"="PROCODIGO")) %>% View()
+
+## ACORDOS TAB =================================================
+
+acordos_tab_G244 <-
+  dbGetQuery(con2,"
+              WITH TB AS (SELECT TBPCODIGO,TBPDESCRICAO,TBPDTVALIDADE FROM TABPRECO WHERE 
+              (TBPDTVALIDADE >='TODAY' OR TBPDTVALIDADE IS NULL) AND TBPCODIGO NOT IN (6,125,126,2028)),
+              
+               TPRODU AS (SELECT TP.TBPCODIGO,
+                                     PROCODIGO,
+                                      TBPDESCRICAO,
+                                       TBPDTVALIDADE,
+                                         TBPPCOVENDA,
+                                          TBPPCDESCTO2,
+                                           TBPPCOVENDA2,
+                                            TBPPCDESCTO 
+                                             FROM TBPPRODU TP
+                 INNER JOIN TB T ON T.TBPCODIGO=TP.TBPCODIGO)
+              
+                  SELECT C.TBPCODIGO,
+                            TBPDESCRICAO,
+                             PROCODIGO,
+                              TP.TBPDTVALIDADE,
+                               TBPPCOVENDA,
+                                TBPPCDESCTO2,
+                                 TBPPCOVENDA2,
+                                  TBPPCDESCTO
+                                   FROM CLITBP C 
+                    INNER JOIN TPRODU TP ON C.TBPCODIGO=TP.TBPCODIGO WHERE CLICODIGO=241") %>% 
+  mutate(PROCODIGO=trimws(PROCODIGO))
+
+
+View(acordos_tab_G244)
+
 
 
 ## TRAT BONIFICADOS ========================================================
@@ -648,8 +710,26 @@ mutate(ACORDO=PRECO*(1-DESCONTO/100)) %>%
   left_join(.,pdc_df2 %>% select(CHAVE,PDC),by="CHAVE") 
   
   View(relrepro_3661_G244)
-
   
+  
+
+## LENTES ESPACE =====================================================================
+ 
+lentes_espace <-   
+produ %>% filter(MARCA=='ESPACE') %>% select(PROCODIGO) %>% left_join(.,premp %>% mutate(PROCODIGO=trimws(PROCODIGO)),by="PROCODIGO") %>% left_join(.,acordos_tab_G244 %>% select(PROCODIGO,TBPPCDESCTO2),by="PROCODIGO") %>%  cross_join(.,descto_geral) %>% mutate(TBPPCDESCTO2=if_else(is.na(TBPPCDESCTO2),DESCTO_GERAL,TBPPCDESCTO2)) %>% select(-DESCTO_GERAL)
+  
+
+trat_espace_310 <- 
+produ %>% filter(PROTIPO=='T') %>% filter(str_detect(PROCODIGO,'310')) %>% select(PROCODIGO) %>% left_join(.,premp %>% mutate(PROCODIGO=trimws(PROCODIGO)),by="PROCODIGO") %>% cross_join(.,descto_geral)
+
+
+espace_3687_g244 %>% left_join(.,premp,by="PROCODIGO") %>% View()
+
+cross_join(espace_3687_g244,trat_espace_310) %>% cross_join(.,descto_geral) %>% View() 
+  
+  
+
+
 ## LENTES MULTIFOCAIS SEM TRATAMENTO ============================================
   
 
